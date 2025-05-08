@@ -13,7 +13,7 @@ services:
       - wpsite_network
 
   wordpress:
-    build: 
+    build:
       context: . # Uses the Dockerfile in the current directory
     depends_on:
       - db
@@ -27,13 +27,13 @@ services:
       # WORDPRESS_DB_USER and WORDPRESS_DB_PASSWORD will be loaded from .env.local by env_file
       WORDPRESS_DB_NAME: wordpress
       # Optional: Set your site URL if needed, especially if you encounter redirect issues
-      # WORDPRESS_SITE_URL: http://localhost:8080 
+      # WORDPRESS_SITE_URL: http://localhost:8080
       # WORDPRESS_HOME: http://localhost:8080
     volumes:
       # Mounts the custom theme for live development (reflects local changes immediately)
       - ./wp-content/themes/cec-paywall-theme:/var/www/html/wp-content/themes/cec-paywall-theme
       # Optional: Mount entire wp-content if you want to persist uploads, other themes, plugins etc.
-      # - ./wp-content:/var/www/html/wp-content 
+      # - ./wp-content:/var/www/html/wp-content
     networks:
       - wpsite_network
 
