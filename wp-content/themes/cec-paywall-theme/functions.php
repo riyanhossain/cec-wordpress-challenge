@@ -120,6 +120,9 @@ add_action( 'after_setup_theme', 'cec_paywall_theme_content_width', 0 );
 function cec_paywall_theme_scripts() {
 	wp_enqueue_style( 'cec-paywall-theme-style', get_stylesheet_uri(), array(), _S_VERSION );
 	wp_style_add_data( 'cec-paywall-theme-style', 'rtl', 'replace' );
+	
+	// Enqueue Tailwind CSS
+	wp_enqueue_style( 'cec-paywall-theme-tailwind', get_template_directory_uri() . '/assets/css/output.css', array(), _S_VERSION );
 
 	wp_enqueue_script( 'cec-paywall-theme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 
@@ -269,4 +272,64 @@ function cec_restrict_premium_content_query( $query ) {
     }
 }
 add_action( 'pre_get_posts', 'cec_restrict_premium_content_query' );
+
+/**
+ * Custom comment callback with Tailwind CSS styling
+ */
+function cec_comment_callback($comment, $args, $depth) {
+    $tag = ($args['style'] === 'div') ? 'div' : 'li';
+    $commenter = wp_get_current_commenter();
+    $show_pending_links = !empty($commenter['comment_author']) && !empty($commenter['comment_author_email']);
+    $comment_class = comment_class('py-6', $comment, null, false);
+?>
+    <<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php echo $comment_class; ?>>
+        <article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 mr-4">
+                    <?php
+                    if ($args['avatar_size'] != 0) {
+                        echo get_avatar($comment, $args['avatar_size'], '', '', array('class' => 'rounded-full'));
+                    }
+                    ?>
+                </div>
+                <div class="flex-grow">
+                    <div class="comment-meta mb-2">
+                        <div class="comment-author vcard">
+                            <span class="font-medium text-gray-800"><?php echo get_comment_author_link($comment); ?></span>
+                        </div>
+                        <div class="comment-metadata text-xs text-gray-600 mt-1">
+                            <time datetime="<?php echo get_comment_time('c'); ?>"><?php
+                                /* translators: 1: comment date, 2: comment time */
+                                printf(esc_html__('%1$s at %2$s', 'cec-paywall-theme'), get_comment_date('', $comment), get_comment_time());
+                            ?></time>
+                            <?php edit_comment_link(__('Edit', 'cec-paywall-theme'), ' <span class="text-blue-600">', '</span>'); ?>
+                        </div>
+                    </div>
+
+                    <div class="comment-content text-gray-700">
+                        <?php
+                        if ($comment->comment_approved == '0') {
+                            echo '<p class="text-sm bg-yellow-50 border-l-4 border-yellow-400 p-2 mb-2">' . esc_html__('Your comment is awaiting moderation.', 'cec-paywall-theme') . '</p>';
+                        }
+                        comment_text();
+                        ?>
+                    </div>
+
+                    <div class="reply mt-2 text-sm">
+                        <?php
+                        comment_reply_link(array_merge($args, array(
+                            'add_below' => 'div-comment',
+                            'depth' => $depth,
+                            'max_depth' => $args['max_depth'],
+                            'before' => '<span class="text-blue-600 hover:text-blue-800">',
+                            'after' => '</span>'
+                        )));
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </<?php echo $tag; ?>>
+<?php
+}
 
