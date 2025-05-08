@@ -25,7 +25,7 @@
 			<div>
 				<?php
 				/* translators: 1: Theme name, 2: Theme author. */
-				printf( esc_html__( 'Theme: %1$s by %2$s.', 'cec-paywall-theme' ), 'CEC Paywall Theme', '<a href="Your Website" class="text-blue-300 hover:text-blue-100 transition-colors">Your Name</a>' );
+				printf( esc_html__( 'Theme: %1$s by %2$s.', 'cec-paywall-theme' ), 'CEC Paywall Theme', '<a href="Your Website" class="text-blue-300 hover:text-blue-100 transition-colors">Riyan</a>' );
 				?>
 			</div>
 		</div><!-- .site-info -->

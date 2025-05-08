@@ -20,10 +20,10 @@
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?> >
 <?php wp_body_open(); ?>
 <div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'cec-paywall-theme' ); ?></a>
+	<a class="skip-link screen-reader-text sr-only" href="#primary"><?php esc_html_e( 'Skip to content', 'cec-paywall-theme' ); ?></a>
 
 	<header id="masthead" class="site-header bg-white shadow-md">
 		<div class="container mx-auto px-4 py-4">
