@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mysql:8.0 # Changed from mysql:5.7 to mysql:8.0
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    env_file:
+      - .env.local # Load environment variables from .env.local
+    environment:
+      # MYSQL_ROOT_PASSWORD, MYSQL_USER, MYSQL_PASSWORD are set from .env.local
+      MYSQL_DATABASE: wordpress
+    networks:
+      - wpsite_network
+
+  wordpress:
+    build: 
+      context: . # Uses the Dockerfile in the current directory
+    depends_on:
+      - db
+    ports:
+      - "8080:80" # Map host port 8080 to container port 80
+    restart: always
+    env_file:
+      - .env.local # Load environment variables from .env.local
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      # WORDPRESS_DB_USER and WORDPRESS_DB_PASSWORD will be loaded from .env.local by env_file
+      WORDPRESS_DB_NAME: wordpress
+      # Optional: Set your site URL if needed, especially if you encounter redirect issues
+      # WORDPRESS_SITE_URL: http://localhost:8080 
+      # WORDPRESS_HOME: http://localhost:8080
+    volumes:
+      # Mounts the custom theme for live development (reflects local changes immediately)
+      - ./wp-content/themes/cec-paywall-theme:/var/www/html/wp-content/themes/cec-paywall-theme
+      # Optional: Mount entire wp-content if you want to persist uploads, other themes, plugins etc.
+      # - ./wp-content:/var/www/html/wp-content 
+    networks:
+      - wpsite_network
+
+volumes:
+  db_data: {}
+
+networks:
+  wpsite_network:
+    driver: bridge
