@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template part for displaying posts
  *
@@ -9,17 +10,17 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class('bg-white rounded-lg shadow-md overflow-hidden mb-8'); ?>>
+<article id="post-<?php the_ID(); ?>" class="bg-white rounded-lg shadow-md overflow-hidden mb-[24px] prose mx-auto">
 	<header class="entry-header p-6 bg-gray-50 border-b">
 		<?php
-		if ( is_singular() ) :
-			the_title( '<h1 class="entry-title text-3xl font-bold text-gray-800">', '</h1>' );
+		if (is_singular()) :
+			the_title('<h1 class="entry-title text-3xl font-bold text-gray-800">', '</h1>');
 		else :
-			the_title( '<h2 class="entry-title text-2xl font-bold"><a class="text-blue-700 hover:text-blue-900" href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
+			the_title('<h2 class="entry-title text-2xl font-bold"><a class="text-blue-700 hover:text-blue-900" href="' . esc_url(get_permalink()) . '" rel="bookmark">', '</a></h2>');
 		endif;
 
-		if ( 'post' === get_post_type() ) :
-			?>
+		if ('post' === get_post_type()) :
+		?>
 			<div class="entry-meta text-sm text-gray-600 mt-2">
 				<?php
 				cec_paywall_theme_posted_on();
@@ -29,54 +30,54 @@
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php 
-	if (has_post_thumbnail()) : 
+	<?php
+	if (has_post_thumbnail()) :
 		echo '<div class="post-thumbnail-container overflow-hidden">';
-		cec_paywall_theme_post_thumbnail(); 
+		cec_paywall_theme_post_thumbnail();
 		echo '</div>';
-	endif; 
+	endif;
 	?>
 
 	<div class="entry-content p-6">
 		<?php
 		// Paywall Gate Logic
-		$required_role = get_post_meta( get_the_ID(), '_cec_post_access_role', true );
+		$required_role = get_post_meta(get_the_ID(), '_cec_post_access_role', true);
 		$current_user = wp_get_current_user();
 		$can_access = false;
 
-		if ( empty( $required_role ) ) { // Public content
+		if (empty($required_role)) { // Public content
 			$can_access = true;
 		} else {
 			$user_roles = (array) $current_user->roles;
-			if ( in_array( 'administrator', $user_roles ) ) { // Admins can always access
-                $can_access = true;
-            } else {
-                switch ( $required_role ) {
-                    case 'free_reader':
-                        if ( in_array( 'free_reader', $user_roles ) || in_array( 'paid_reader', $user_roles ) || in_array( 'premium_reader', $user_roles ) ) {
-                            $can_access = true;
-                        }
-                        break;
-                    case 'paid_reader':
-                        if ( in_array( 'paid_reader', $user_roles ) || in_array( 'premium_reader', $user_roles ) ) {
-                            $can_access = true;
-                        }
-                        break;
-                    case 'premium_reader':
-                        if ( in_array( 'premium_reader', $user_roles ) ) {
-                            $can_access = true;
-                        }
-                        break;
-                }
-            }
+			if (in_array('administrator', $user_roles)) { // Admins can always access
+				$can_access = true;
+			} else {
+				switch ($required_role) {
+					case 'free_reader':
+						if (in_array('free_reader', $user_roles) || in_array('paid_reader', $user_roles) || in_array('premium_reader', $user_roles)) {
+							$can_access = true;
+						}
+						break;
+					case 'paid_reader':
+						if (in_array('paid_reader', $user_roles) || in_array('premium_reader', $user_roles)) {
+							$can_access = true;
+						}
+						break;
+					case 'premium_reader':
+						if (in_array('premium_reader', $user_roles)) {
+							$can_access = true;
+						}
+						break;
+				}
+			}
 		}
 
-		if ( $can_access ) {
+		if ($can_access) {
 			the_content(
-				 sprintf(
+				sprintf(
 					wp_kses(
 						/* translators: %s: Name of current post. Only visible to screen readers */
-						__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'cec-paywall-theme' ),
+						__('Continue reading<span class="screen-reader-text"> "%s"</span>', 'cec-paywall-theme'),
 						array(
 							'span' => array(
 								'class' => array(),
@@ -91,11 +92,11 @@
 			echo '<div class="prose max-w-none mb-8">';
 			the_excerpt();
 			echo '</div>';
-			
+
 			echo '<div class="paywall-message bg-gray-100 border border-gray-300 rounded-lg p-6 my-8">';
 			echo '<h3 class="text-xl font-bold text-gray-800 mb-3">' . esc_html__('Premium Content', 'cec-paywall-theme') . '</h3>';
 			echo '<p class="mb-4">' . esc_html__('This content is restricted. Please subscribe or log in to view the full article.', 'cec-paywall-theme') . '</p>';
-			
+
 			// Add subscription/login buttons
 			echo '<div class="flex flex-wrap gap-4">';
 			if (!is_user_logged_in()) {
@@ -112,7 +113,7 @@
 
 		wp_link_pages(
 			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'cec-paywall-theme' ),
+				'before' => '<div class="page-links">' . esc_html__('Pages:', 'cec-paywall-theme'),
 				'after'  => '</div>',
 			)
 		);
