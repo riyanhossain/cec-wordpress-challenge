@@ -8,11 +8,14 @@
  * @package CEC_Paywall_Theme
  */
 
+?>
+
+<?php
 get_header();
 ?>
 
 <div class="flex flex-wrap lg:flex-row">
-	<main id="primary" class="site-main w-full">
+	<main id="primary" class="site-main w-full max-w-2xl mx-auto">
 
 		<?php
 		while (have_posts()) :
@@ -43,6 +46,8 @@ get_header();
 
 	<?php get_sidebar(); ?>
 </div>
+
+</div><!-- .page -->
 
 <?php
 get_footer();

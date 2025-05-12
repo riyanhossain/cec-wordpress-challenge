@@ -13,10 +13,16 @@
  * @package CEC_Paywall_Theme
  */
 
-get_header(); ?>
+
+
+?>
+
+<?php
+get_header();
+?>
 
 <div class="flex flex-wrap lg:flex-row">
-	<main id="primary" class="site-main w-full">
+	<main id="primary" class="site-main w-full max-w-2xl mx-auto">
 
 		<?php
 		if (have_posts()) :
@@ -26,7 +32,7 @@ get_header(); ?>
 				<header class="mb-6">
 					<h1 class="page-title text-3xl font-bold text-gray-800 screen-reader-text"><?php single_post_title(); ?></h1>
 				</header>
-		<?php
+			<?php
 			endif;
 
 			/* Start the Loop */
@@ -38,7 +44,27 @@ get_header(); ?>
 				 * If you want to override this in a child theme, then include a file
 				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
 				 */
-				get_template_part('template-parts/content', get_post_type());
+			?>
+				<div class="entry-header p-6 bg-gray-50 border-b">
+					<?php
+
+					the_title('<h2 class="entry-title text-2xl font-bold"><a class="text-blue-700 hover:text-blue-900" href="' . esc_url(get_permalink()) . '" rel="bookmark">', '</a></h2>');
+
+					if ('post' === get_post_type()) :
+					?>
+						<div class="entry-meta text-sm text-gray-600 mt-2">
+							<?php
+							cec_paywall_theme_posted_on();
+							cec_paywall_theme_posted_by();
+							?>
+						</div><!-- .entry-meta -->
+					<?php endif; ?>
+				</div>
+
+
+		<?php
+
+			// get_template_part('template-parts/content', get_post_type());
 
 			endwhile;
 
@@ -62,6 +88,6 @@ get_header(); ?>
 
 	<?php get_sidebar(); ?>
 </div>
-
+</div><!-- #page -->
 <?php
 get_footer();

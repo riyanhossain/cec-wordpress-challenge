@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Sample implementation of the Custom Header feature
  *
@@ -16,7 +17,8 @@
  *
  * @uses cec_paywall_theme_header_style()
  */
-function cec_paywall_theme_custom_header_setup() {
+function cec_paywall_theme_custom_header_setup()
+{
 	add_theme_support(
 		'custom-header',
 		apply_filters(
@@ -32,15 +34,16 @@ function cec_paywall_theme_custom_header_setup() {
 		)
 	);
 }
-add_action( 'after_setup_theme', 'cec_paywall_theme_custom_header_setup' );
+add_action('after_setup_theme', 'cec_paywall_theme_custom_header_setup');
 
-if ( ! function_exists( 'cec_paywall_theme_header_style' ) ) :
+if (! function_exists('cec_paywall_theme_header_style')) :
 	/**
 	 * Styles the header image and text displayed on the blog.
 	 *
 	 * @see cec_paywall_theme_custom_header_setup().
 	 */
-	function cec_paywall_theme_header_style() {
+	function cec_paywall_theme_header_style()
+	{
 		$header_text_color = get_header_textcolor();
 
 		/*
@@ -48,32 +51,32 @@ if ( ! function_exists( 'cec_paywall_theme_header_style' ) ) :
 		 * get_header_textcolor() options: Any hex color, 'blank' to hide text.
 		 * Default Header Text Color is '000000' == black.
 		 */
-		if ( get_theme_support( 'custom-header', 'default-text-color' ) === $header_text_color ) {
+		if (get_theme_support('custom-header', 'default-text-color') === $header_text_color) {
 			return;
 		}
 
 		// If we get this far, we have custom styles. Let's do this.
-		?>
+?>
 		<style type="text/css">
-		<?php
-		// Has the text been hidden?
-		if ( ! display_header_text() ) :
-			?>
-			.site-title,
+			<?php
+			// Has the text been hidden?
+			if (! display_header_text()) :
+			?>.site-title,
 			.site-description {
 				position: absolute;
 				clip: rect(1px, 1px, 1px, 1px);
 			}
+
 			<?php
 			// If the user has set a custom color for the text use that.
-		else :
-			?>
-			.site-title a,
+			else :
+			?>.site-title a,
 			.site-description {
-				color: #<?php echo esc_attr( $header_text_color ); ?>;
-			}
-		<?php endif; ?>
+				color: #<?php echo esc_attr($header_text_color); ?>;
+			}<?php
+			endif;
+			?>
 		</style>
-		<?php
+<?php
 	}
 endif;

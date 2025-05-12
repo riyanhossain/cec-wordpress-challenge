@@ -10,7 +10,7 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" class="bg-white rounded-lg shadow-md overflow-hidden mb-[24px] prose mx-auto">
+<article id="post-<?php the_ID(); ?>" <?php post_class('bg-white rounded-lg shadow-md overflow-hidden mb-8 prose mx-auto min-w-fit') ?>>
 	<header class="entry-header p-6 bg-gray-50 border-b">
 		<?php
 		if (is_singular()) :
